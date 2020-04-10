@@ -35,8 +35,7 @@ class estimate():
     self.severeImpact = self.data.copy()
     self.severeImpact['currentlyInfected'] = self.currentlyInfected['severeImpact']
 
-    print(self.impact)
-    print(self.severeImpact)
+    return self.impact, self.severeImpact
 
   def estimateFor28Days(self, reportedCases):
     self.currentlyInfected = {
@@ -54,17 +53,12 @@ class estimate():
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['infectionsByRequestedTime'] = infectionsByRequestedTime['impactFor28Days']
 
-    print(infectionsByRequestedTime['impactFor28Days'])
-    print(infectionsByRequestedTime['severeImpactFor28Days'])
-
   def severeCasesByRequestedTime(self):
     #Determine 15% of infectionsByRequestedTime.
     severeCasesByRequestedTime = (15 / 100) * self.severeImpact['infectionsByRequestedTime']
     #Update Estimate Output
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['severeCasesByRequestedTime'] = severeCasesByRequestedTime
-    print('Here is severeCasesByRequestedTime : ')
-    print(severeCasesByRequestedTime)
     #determine the number of available beds.
     #65% of hospital beds been occupied
     occupied_beds = (65 / 100) * self.severeImpact['totalHospitalBeds']
@@ -80,10 +74,6 @@ class estimate():
     #Update Estimate Data
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime
-    print('Percentage availablity of beds :')
-    print(percentageOfBedAvailable)
-    print('Available Beds :')
-    print(available_beds)
 
   def casesForICUByRequestedTime(self):
     #estimated number of severe positive cases that will require ICU care
@@ -106,17 +96,19 @@ class estimate():
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['dollarsInFlight'] = dollarsInFlight
 
+  def finalEstimate(self):
+    return impacts.severeImpact, impacts.impact
+
 impacts = estimate()
 reportedCases = 20
 impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
 impacts.estimateFor28Days(reportedCases)         #estimate for 28 days {impact and SevereImpact}
-print(impacts.impact)
 
 #Determine 15% of infectionsByRequestedTime to get 'severeCasesByRequestedTime' and figure out hospitalBedsByRequestedTime
 impacts.severeCasesByRequestedTime()
-print(impacts.severeImpact)
+
 impacts.moneyLossInTheEconomy()
 
 #This completely outputs the severeImpact result with all required parameters and info
-print(impacts.severeImpact)
+impacts.finalEstimate()
 
