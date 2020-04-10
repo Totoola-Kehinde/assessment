@@ -10,15 +10,15 @@ class estimate():
   def get_data(self, name,avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation, periodType, timeToElapse,reportedCases, population, totalHospitalBeds):
       self.data = {
         'region': {
-          name : name, #Continent
-          avgAge : avgAge,
-          avgDailyIncomeInUSD : avgDailyIncomeInUSD,
-          avgDailyIncomePopulation : avgDailyIncomePopulation
+          'name' : name, #Continent
+          'avgAge' : avgAge,
+          'avgDailyIncomeInUSD' : avgDailyIncomeInUSD,
+          'avgDailyIncomePopulation' : avgDailyIncomePopulation
         },
-        periodType : periodType,
-        timeToElapse : timeToElapse,
-        population : population,
-        totalHospitalBeds : totalHospitalBeds
+        'periodType' : periodType,
+        'timeToElapse' : timeToElapse,
+        'population' : population,
+        'totalHospitalBeds' : totalHospitalBeds
       }
 
   #Impact Estimator to get the value of currently Infected
@@ -50,9 +50,51 @@ class estimate():
     infectionsByRequestedTime = {
       'impactFor28Days': self.currentlyInfected['impact'] * 512,
       'severeImpactFor28Days': self.currentlyInfected['severeImpact'] * 512
-    } 
+    }
+    #Updating estimate output data by copy previous and adding new dict items
+    self.impact = self.impact.copy()
+    self.impact['infectionsByRequestedTime'] = infectionsByRequestedTime['impactFor28Days']
+    self.severeImpact = self.severeImpact.copy()
+    self.severeImpact['infectionsByRequestedTime'] = infectionsByRequestedTime['impactFor28Days']
+
     print(infectionsByRequestedTime['impactFor28Days'])
     print(infectionsByRequestedTime['severeImpactFor28Days'])
+
+  def severeCasesByRequestedTime(self):
+    #Determine 15% of infectionsByRequestedTime.
+    severeCasesByRequestedTime = (15 / 100) * self.severeImpact['infectionsByRequestedTime']
+    
+    #Update Estimate Output
+    self.severeImpact = self.severeImpact.copy()
+    self.severeImpact['severeCasesByRequestedTime'] = severeCasesByRequestedTime
+    print('Here is severeCasesByRequestedTime :')
+    print(severeCasesByRequestedTime)
+
+    #determine the number of available beds.
+    #65% of hospital beds been occupied
+    occupied_beds = (65 / 100) * self.severeImpact['totalHospitalBeds']
+
+    #capacity of patients by hospital 95%
+    capacity = (95 / 100) *self.severeImpact['totalHospitalBeds']
+
+    #35% bed availability in hospitals for severe COVID-19 positive patients.
+    #capacity of beds minus occupied beds will give available beds
+    available_beds = int(capacity) - int(occupied_beds)
+
+    #percentage availabilty of beds
+    percentageOfBedAvailable = (available_beds / capacity) * 100
+
+    #hospitalBedsByRequestedTime
+    hospitalBedsByRequestedTime = available_beds
+
+    #Update Estimate Data
+    self.severeImpact = self.severeImpact.copy()
+    self.severeImpact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime
+
+    print('Percentage availablity of beds :')
+    print(percentageOfBedAvailable)
+    print('Available Beds :')
+    print(available_beds)
 
 def estimator(data):
   return data
@@ -61,3 +103,7 @@ impacts = estimate()
 reportedCases = 20
 impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
 impacts.estimateFor28Days(reportedCases)         #estimate for 28 days {impact and SevereImpact}
+print(impacts.impact)
+impacts.severeCasesByRequestedTime()
+print(impacts.severeImpact)
+
