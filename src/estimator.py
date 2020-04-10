@@ -53,62 +53,8 @@ class estimate():
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['infectionsByRequestedTime'] = infectionsByRequestedTime['impactFor28Days']
 
-  def severeCasesByRequestedTime(self):
-    #Determine 15% of infectionsByRequestedTime.
-    severeCasesByRequestedTime = (15 / 100) * self.severeImpact['infectionsByRequestedTime']
-    #Update Estimate Output
-    self.severeImpact = self.severeImpact.copy()
-    self.severeImpact['severeCasesByRequestedTime'] = severeCasesByRequestedTime
-    #determine the number of available beds.
-    #65% of hospital beds been occupied
-    occupied_beds = (65 / 100) * self.severeImpact['totalHospitalBeds']
-    #capacity of patients by hospital 95%
-    capacity = (95 / 100) *self.severeImpact['totalHospitalBeds']
-    #35% bed availability in hospitals for severe COVID-19 positive patients.
-    #capacity of beds minus occupied beds will give available beds
-    available_beds = int(capacity) - int(occupied_beds)
-    #percentage availabilty of beds
-    percentageOfBedAvailable = (available_beds / capacity) * 100
-    #hospitalBedsByRequestedTime
-    hospitalBedsByRequestedTime = available_beds
-    #Update Estimate Data
-    self.severeImpact = self.severeImpact.copy()
-    self.severeImpact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime
-
-  def casesForICUByRequestedTime(self):
-    #estimated number of severe positive cases that will require ICU care
-    casesForICUByRequestedTime = (5 / 100) * self.severeImpact['infectionsByRequestedTime']
-    #Update Estimate Data For SevereImpact Outputs
-    self.severeImpact = self.severeImpact.copy()
-    self.severeImpact['casesForICUByRequestedTime'] = casesForICUByRequestedTime
-    #determine 2% of infectionsByRequestedTime
-    #estimated number of severe positive cases that will require ventilators
-    casesForVentilatorsByRequestedTime = (2 / 100) * self.severeImpact['infectionsByRequestedTime']
-    #Update Estimate Data For SevereImpact Outputs
-    self.severeImpact = self.severeImpact.copy()
-    self.severeImpact['casesForVentilatorsByRequestedTime'] = casesForVentilatorsByRequestedTime
-  
-  def moneyLossInTheEconomy(self):
-    #estimate how much money the economy is likely to lose over the said period
-    #65% average daily income of the region assumed to be $5
-    #30 days to be the said period
-    dollarsInFlight = self.severeImpact['infectionsByRequestedTime'] * (0.65 * 5 * 30)
-    self.severeImpact = self.severeImpact.copy()
-    self.severeImpact['dollarsInFlight'] = dollarsInFlight
-
-  def finalEstimate(self):
-    return impacts.severeImpact, impacts.impact
-
 impacts = estimate()
 reportedCases = 20
 impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
 impacts.estimateFor28Days(reportedCases)         #estimate for 28 days {impact and SevereImpact}
-
-#Determine 15% of infectionsByRequestedTime to get 'severeCasesByRequestedTime' and figure out hospitalBedsByRequestedTime
-impacts.severeCasesByRequestedTime()
-
-impacts.moneyLossInTheEconomy()
-
-#This completely outputs the severeImpact result with all required parameters and info
-impacts.finalEstimate()
 
