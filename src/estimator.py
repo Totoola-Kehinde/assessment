@@ -1,6 +1,3 @@
-#global variables
-currentlyInfected = 0
-
 class estimate():
   #OUTPUTS
   data = {}
