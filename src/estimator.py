@@ -106,9 +106,6 @@ class estimate():
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['dollarsInFlight'] = dollarsInFlight
 
-def estimator(data):
-  return data
-
 impacts = estimate()
 reportedCases = 20
 impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
