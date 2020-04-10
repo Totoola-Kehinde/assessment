@@ -63,7 +63,7 @@ class estimate():
     #Update Estimate Output
     self.severeImpact = self.severeImpact.copy()
     self.severeImpact['severeCasesByRequestedTime'] = severeCasesByRequestedTime
-    print('Here is severeCasesByRequestedTime :')
+    print('Here is severeCasesByRequestedTime : ')
     print(severeCasesByRequestedTime)
     #determine the number of available beds.
     #65% of hospital beds been occupied
