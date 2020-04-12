@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Estimator</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/lux.min.css')}}">
+</head>
+<body class="container">
+
+    <div class="">
+
+    <h1>Covid-19 Impact Estimator</h1>
+    <div class="form-group center">
+    <form action="" method="post">
+
+    <label class="col-form-label" for="population">Population</label>
+    <input class="form-control col-4" type="number" name="data-population">
+    <label for="timeToElapse">Time To Elapse</label>
+    <input class="form-control col-4" type="number" name="data-time-to-elapse">
+    <label for="reportedCases">Reported Cases</label>
+    <input class="form-control col-4" type="number" name="data-reported-cases">
+    <label for="totalHospitalBeds">Total Hospital Beds</label>
+    <input class="form-control col-4" type="number" name="data-total-hospital-beds">
+    <label for="periodType">Period Type</label>
+
+    <div class="form-group">
+    <select class="form-control col-3" name="data-period-type" id="periodType">
+        <option value="days">Days</option>
+        <option value="weeks">Weeks</option>
+        <option value="months">Months</option>
+    </select>
+    </div>
+    <div class="form-group">
+    <input class="btn btn-primary center form-control col-2" type="submit" value="Submit" name="data-goestimate">
+    </div>
+
+    </form>
+    </div>
+
+    </div>  <!--First Column-->
+</body>
+</html>

@@ -97,18 +97,18 @@ class estimate():
     self.severeImpact['dollarsInFlight'] = dollarsInFlight
 
   def finalEstimate(self):
-    return impacts.severeImpact, impacts.impact
+    return self.severeImpact, self.impact
 
-impacts = estimate()
-reportedCases = 20
-impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
-impacts.estimateFor28Days(reportedCases)         #estimate for 28 days {impact and SevereImpact}
+
+# reportedCases = 20
+# impacts.covid19ImpactEstimator(reportedCases)    #output estimates {impact and severeImpact}
+# impacts.estimateFor28Days(reportedCases)         #estimate for 28 days {impact and SevereImpact}
 
 #Determine 15% of infectionsByRequestedTime to get 'severeCasesByRequestedTime' and figure out hospitalBedsByRequestedTime
-impacts.severeCasesByRequestedTime()
+# impacts.severeCasesByRequestedTime()
 
-impacts.moneyLossInTheEconomy()
+# impacts.moneyLossInTheEconomy()
 
 #This completely outputs the severeImpact result with all required parameters and info
-impacts.finalEstimate()
+
 
